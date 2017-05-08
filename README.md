@@ -10,4 +10,9 @@ To install **kns** you can just run this command:
 ```bash
 curl https://raw.githubusercontent.com/blendle/kns/master/kns -o /usr/local/bin/kns && chmod +x $_
 ```
+Or use our homebrew tap:
+```bash
+$ brew tap blendle/blendle
+$ brew install kns
+```
 That's it! Done! :raised_hands:
