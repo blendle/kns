@@ -1,0 +1,20 @@
+#!/bin/sh
+# quick Kubernetes Context Switcher
+
+set -eu
+
+if [ ! -x "$(which kubectl 2>/dev/null)" ]; then
+  echo "please install: kubectl (https://kubernetes.io/docs/tasks/kubectl/install/)" >&2
+  exit 1
+fi
+if [ ! -x "$(which fzf 2>/dev/null)" ]; then
+  echo "please install: fzf (https://github.com/junegunn/fzf)" >&2
+  exit 1
+fi
+
+current="$(kubectl config current-context)"
+selected=$( (kubectl config view -o jsonpath="{.contexts[?(@.name != '${current}')].name}" | xargs -n 1; echo $current ) \
+            | fzf -0 -1 --tac -q "${1:-""}" --prompt "$current> " --preview "./helpers/ktx-preview.sh {}")
+if [ ! -z "$selected" ]; then
+  kubectl config use-context "${selected}"
+fi
