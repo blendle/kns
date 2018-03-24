@@ -18,7 +18,8 @@ namespace="$(kubectl config get-contexts "$current" | awk "/$current/ {print \$5
 if [ -z "$namespace" ]; then
   namespace="default"
 fi
-selected=$( (kubectl get namespaces -o name | sed "s-namespaces/--"; echo $namespace ) | fzf -0 -1 --tac -q "${1:-""}" --prompt "$current> " --preview "kubectl --namespace {} get pods")
+export namespace
+selected=$( (kubectl get namespaces -o=jsonpath="{.items[?(@.metadata.name!='$namespace')].metadata.name}" | xargs -n 1; echo $namespace ) | fzf -0 -1 --tac -q "${1:-""}" --prompt "$current> " --preview "kubectl --namespace {} get pods")
 if [ ! -z "$selected" ]; then
   kubectl config set-context "$current" "--namespace=$selected" >/dev/null
   echo "Set context namespace to \"$selected\""
