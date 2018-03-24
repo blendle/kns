@@ -5,22 +5,10 @@ set -eu
 
 selected=$1
 
-declare -a context=($(kubectl config view -o jsonpath="{range .contexts[?(@.name == '${selected}')].context}{@.cluster} {@.user} {@.namespace} {end}"))
-
-if [ ${#context[@]} -eq 0 ];
-then
-  echo "Context not found"
-  exit 1
-fi
-
+IFS=';' read -ra context <<< "$(kubectl config view -o jsonpath="{range .contexts[?(@.name == '${selected}')].context}{@.cluster};{@.user};{@.namespace};{end}")"
 cluster=${context[0]}
 user=${context[1]}
-
-if [ ${#context[@]} -gt 2 ]; then
-  namespace=${context[2]}
-else
-  namespace="none"
-fi
+namespace=${context[2]}
 
 server=$(kubectl config view -o jsonpath="{.clusters[?(@.name == '${cluster}')].cluster.server}")
 
