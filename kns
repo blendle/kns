@@ -13,8 +13,8 @@ if [ ! -x "$(which fzf 2>/dev/null)" ]; then
   exit 1
 fi
 
-current="$(kubectl config current-context)"
-namespace="$(kubectl config get-contexts "$current" | awk "/$current/ {print \$5}")"
+export current="$(kubectl config current-context)"
+namespace="$(kubectl config view -o jsonpath="{.contexts[?(@.name == '${current}')].context.namespace}")"
 if [ -z "$namespace" ]; then
   namespace="default"
 fi
