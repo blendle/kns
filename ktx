@@ -13,7 +13,7 @@ if [ ! -x "$(which fzf 2>/dev/null)" ]; then
 fi
 
 current="$(kubectl config current-context)"
-selected=$( (kubectl config view -o jsonpath="{.contexts[?(@.name != '${current}')].name}" | xargs -n 1; echo $current ) \
+selected=$( (kubectl config view -o jsonpath="{.contexts[?(@.name != '${current}')].name}" | xargs -n 1; echo "${current}" ) \
             | fzf -0 -1 --tac -q "${1:-""}" --prompt "$current> " --preview "./helpers/ktx-preview.sh {}")
 if [ ! -z "$selected" ]; then
   kubectl config use-context "${selected}"
