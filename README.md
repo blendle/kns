@@ -16,3 +16,11 @@ $ brew tap blendle/blendle
 $ brew install kns
 ```
 That's it! Done! :raised_hands:
+
+### ktx - the quick context switcher
+
+For those of you that deal with many different clusters, there's also `ktx` to switch
+between contexts.
+```bash
+curl https://raw.githubusercontent.com/blendle/kns/master/ktx -o /usr/local/bin/ktx && chmod +x $_
+```
