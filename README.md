@@ -8,7 +8,7 @@ to switch between Kubernetes namespaces blazing fast. :fire:
 ## Installation
 To install **kns** you can just run this command:
 ```bash
-curl https://raw.githubusercontent.com/blendle/kns/master/kns -o /usr/local/bin/kns && chmod +x $_
+curl https://raw.githubusercontent.com/blendle/kns/master/bin/kns -o /usr/local/bin/kns && chmod +x $_
 ```
 Or use our homebrew tap:
 ```bash
@@ -21,8 +21,4 @@ That's it! Done! :raised_hands:
 
 For those of you that deal with a lot of clusters regularly, there's also `ktx` to switch
 between contexts. It does not connect to any api-server, but only displays information from
-`kubectl` configuration. It is included in the homebrew package (see above). For manual
-installation:
-```bash
-curl https://raw.githubusercontent.com/blendle/kns/master/ktx -o /usr/local/bin/ktx && chmod +x $_
-```
+`kubectl` configuration. It is included in the homebrew package (see above).
