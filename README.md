@@ -21,4 +21,7 @@ That's it! Done! :raised_hands:
 
 For those of you that deal with a lot of clusters regularly, there's also `ktx` to switch
 between contexts. It does not connect to any api-server, but only displays information from
-`kubectl` configuration. It is included in the homebrew package (see above).
+`kubectl` configuration. It is included in the homebrew package (see above) or you can manually install it too:
+```bash
+curl https://raw.githubusercontent.com/blendle/kns/master/bin/ktx -o /usr/local/bin/ktx && chmod +x $_
+```
