@@ -12,8 +12,8 @@ curl https://raw.githubusercontent.com/blendle/kns/master/bin/kns -o /usr/local/
 ```
 Or use our homebrew tap:
 ```bash
-$ brew tap blendle/blendle
-$ brew install kns
+brew tap blendle/blendle
+brew install kns
 ```
 That's it! Done! :raised_hands:
 
