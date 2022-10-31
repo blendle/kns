@@ -12,14 +12,6 @@ if [ ! -x "$(which fzf 2>/dev/null)" ]; then
   exit 1
 fi
 
-if readlink "$0" >/dev/null; then
-  source="$(readlink "$0")"
-  dir=$(cd "$(dirname "$0")/$(dirname "$source")" && pwd)
-  prefix="$dir/.."
-else
-  prefix="$(dirname "$0")/.."
-fi
-
 current="$(kubectl config current-context)"
 selected=$( (kubectl config view -o jsonpath="{.contexts[?(@.name != '${current}')].name}" | xargs -n 1; echo "${current}" ) \
             | fzf -0 -1 --tac -q "${1:-""}" --prompt "$current> ")
