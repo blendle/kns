@@ -20,7 +20,7 @@ if [ -z "$namespace" ]; then
 fi
 
 selected=$( (kubectl get namespaces -o=jsonpath="{.items[?(@.metadata.name!='$namespace')].metadata.name}" | xargs -n 1; echo $namespace ) | fzf -0 -1 --tac -q "${1:-""}" --prompt "$current> ")
-if [ ! -z "$selected" ]; then
+if [ -n "$selected" ]; then
   kubectl config set-context "$current" "--namespace=$selected" >/dev/null
   echo "Set context namespace to \"$selected\""
 fi
