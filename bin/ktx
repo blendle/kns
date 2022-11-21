@@ -20,8 +20,15 @@ else
   prefix="$(dirname "$0")/.."
 fi
 
-current="$(kubectl config current-context)"
-selected=$( (kubectl config view -o jsonpath="{.contexts[?(@.name != '${current}')].name}" | xargs -n 1; echo "${current}" ) \
+
+exit_code=0; kubectl config current-context || exit_code=$?
+if [[ $exit_code -eq 0 ]]; then
+  current="$(kubectl config current-context)"
+else
+  current=""
+fi
+
+selected=$( (kubectl config view -o jsonpath="{.contexts[?(@.name != '${current}')].name}" | xargs -n 1; echo "${current}\c" ) \
             | fzf -0 -1 --tac -q "${1:-""}" --prompt "$current> ")
 if [ ! -z "$selected" ]; then
   kubectl config use-context "${selected}"
