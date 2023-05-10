@@ -12,15 +12,6 @@ if [ ! -x "$(which fzf 2>/dev/null)" ]; then
   exit 1
 fi
 
-if readlink "$0" >/dev/null; then
-  source="$(readlink "$0")"
-  dir=$(cd "$(dirname "$0")/$(dirname "$source")" && pwd)
-  prefix="$dir/.."
-else
-  prefix="$(dirname "$0")/.."
-fi
-
-
 exit_code=0; kubectl config current-context || exit_code=$?
 if [[ $exit_code -eq 0 ]]; then
   current="$(kubectl config current-context)"
@@ -28,8 +19,8 @@ else
   current=""
 fi
 
-selected=$( (kubectl config view -o jsonpath="{.contexts[?(@.name != '${current}')].name}" | xargs -n 1; echo "${current}\c" ) \
+selected=$( (kubectl config view -o jsonpath="{.contexts[?(@.name != '${current}')].name}" | xargs -n 1; echo "${current}" ) \
             | fzf -0 -1 --tac -q "${1:-""}" --prompt "$current> ")
-if [ ! -z "$selected" ]; then
+if [ -n "$selected" ]; then
   kubectl config use-context "${selected}"
 fi
