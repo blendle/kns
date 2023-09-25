@@ -12,13 +12,7 @@ if [ ! -x "$(which fzf 2>/dev/null)" ]; then
   exit 1
 fi
 
-exit_code=0; kubectl config current-context || exit_code=$?
-if [[ $exit_code -eq 0 ]]; then
-  current="$(kubectl config current-context)"
-else
-  current=""
-fi
-
+current="$(kubectl config current-context || true)"
 selected=$( (kubectl config view -o jsonpath="{.contexts[?(@.name != '${current}')].name}" | xargs -n 1; echo "${current}" ) \
             | fzf -0 -1 --tac -q "${1:-""}" --prompt "$current> ")
 if [ -n "$selected" ]; then
