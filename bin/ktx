@@ -12,7 +12,7 @@ if [ ! -x "$(which fzf 2>/dev/null)" ]; then
   exit 1
 fi
 
-current="$(kubectl config current-context)"
+current="$(kubectl config current-context || true)"
 selected=$( (kubectl config view -o jsonpath="{.contexts[?(@.name != '${current}')].name}" | xargs -n 1; echo "${current}" ) \
             | fzf -0 -1 --tac -q "${1:-""}" --prompt "$current> ")
 if [ -n "$selected" ]; then
